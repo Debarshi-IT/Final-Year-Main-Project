@@ -320,9 +320,9 @@ flowchart TD
     B --> C{Obstacle Detected?}
     C -- Yes --> D[Reduce Velocity / Trigger Braking]
     C -- No --> E{Traffic Light Red/Yellow?}
-    E -- Yes & Heading to Center --> F[Decelerate to Stop Line]
+    E -- Yes and Heading to Center --> F[Decelerate to Stop Line]
     E -- No --> G{Zebra Crossing Active?}
-    G -- Yes & Heading to Crosswalk --> H[Decelerate to Crosswalk Line]
+    G -- Yes and Heading to Crosswalk --> H[Decelerate to Crosswalk Line]
     G -- No --> I[Maintain Cruise Speed Limit]
     D --> J[Compute Lateral Pure Pursuit Steering]
     F --> J
@@ -402,30 +402,30 @@ graph TD
 The use case diagram highlights the interactions between the actor classes and the system features:
 
 ```mermaid
-left-to-right direction
-rect ORG
-    usecase UC1 as "Define Destination & Start"
-    usecase UC2 as "Engage / Disengage Autopilot"
-    usecase UC3 as "Override Autopilot Manually"
-    usecase UC4 as "Perform Wrong-Way Recovery"
-    usecase UC5 as "Avoid Obstacles (Lidar)"
-    usecase UC6 as "Comply with Traffic Lights"
-    usecase UC7 as "Run Closed-Loop Hemisphere Paths"
-    usecase UC8 as "Compile Telemetry & Save Charts"
-end
+graph LR
+    subgraph SystemBoundary ["SmartDrive Simulator System Boundary"]
+        UC1(["Define Destination & Start"])
+        UC2(["Engage / Disengage Autopilot"])
+        UC3(["Override Autopilot Manually"])
+        UC4(["Perform Wrong-Way Recovery"])
+        UC5(["Avoid Obstacles (Lidar)"])
+        UC6(["Comply with Traffic Lights"])
+        UC7(["Run Closed-Loop Hemisphere Paths"])
+        UC8(["Compile Telemetry & Save Charts"])
+    end
 
-User([User / Tester]) --> UC1
-User --> UC2
-User --> UC3
-User --> UC8
+    User["👤 User / Tester"] --> UC1
+    User --> UC2
+    User --> UC3
+    User --> UC8
 
-AutopilotCar([Autopilot Vehicle]) --> UC4
-AutopilotCar --> UC5
-AutopilotCar --> UC6
-AutopilotCar --> UC8
+    AutopilotCar["🚗 Autopilot Vehicle"] --> UC4
+    AutopilotCar --> UC5
+    AutopilotCar --> UC6
+    AutopilotCar --> UC8
 
-TrafficSystem([Traffic Manager / NPCs]) --> UC7
-TrafficSystem --> UC6
+    TrafficSystem["🚦 Traffic Manager / NPCs"] --> UC7
+    TrafficSystem --> UC6
 ```
 
 ---
