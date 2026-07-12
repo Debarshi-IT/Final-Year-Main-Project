@@ -5,7 +5,7 @@
 ## TITLE PAGE
 
 **PROJECT REPORT ON:**
-**SMARTDRIVE: A 3D SELF-DRIVING VEHICLE SIMULATOR WITH CLIENT-SIDE PHYSICS AND BACKEND MACHINE LEARNING**
+**SMARTDRIVE: A 3D SELF-DRIVING VEHICLE SIMULATOR WITH CLIENT-SIDE PHYSICS AND BACKEND PATH PLANNING**
 
 *Submitted in partial fulfillment of the requirements for the award of the degree of*
 **Bachelor of Technology**
@@ -30,7 +30,7 @@
 
 ## CERTIFICATE
 
-This is to certify that the project report entitled **"SMARTDRIVE: A 3D SELF-DRIVING VEHICLE SIMULATOR WITH CLIENT-SIDE PHYSICS AND BACKEND MACHINE LEARNING"**, submitted by **[Student Name 1]**, **[Student Name 2]**, and **[Student Name 3]** in partial fulfillment of the requirements for the award of the degree of **Bachelor of Technology** in **Computer Science and Engineering** is a record of bonafide work carried out by them under my supervision and guidance.
+This is to certify that the project report entitled **"SMARTDRIVE: A 3D SELF-DRIVING VEHICLE SIMULATOR WITH CLIENT-SIDE PHYSICS AND BACKEND PATH PLANNING"**, submitted by **[Student Name 1]**, **[Student Name 2]**, and **[Student Name 3]** in partial fulfillment of the requirements for the award of the degree of **Bachelor of Technology** in **Computer Science and Engineering** is a record of bonafide work carried out by them under my supervision and guidance.
 
 To the best of my knowledge, the matter embodied in this project report has not been submitted to any other University or Institute for the award of any degree or diploma.
 
@@ -89,29 +89,29 @@ Finally, we express our heartfelt appreciation to our parents and friends for th
 *   **List of Figures/Tables** ........................................................................................................ 5
 *   **Abstract** ........................................................................................................ 6
 *   **1. Introduction** ........................................................................................................ 7
-*   **1.1 Literature Review** ........................................................................................ 8
-*   **1.2 Motivation** ........................................................................................ 10
-*   **1.3 Contribution** ........................................................................................ 11
+    *   1.1 Literature Review ........................................................................................ 8
+    *   1.2 Motivation ........................................................................................ 10
+    *   1.3 Contribution ........................................................................................ 11
 *   **2. Project Details** ........................................................................................................ 12
-*   **2.1 Hardware Requirements** ........................................................................................ 12
-*   **2.2 Software Requirements** ........................................................................................ 12
-*       2.2.1 Operating System ........................................................................................ 12
-*       2.2.2 Runtime Environments ........................................................................................ 13
-*       2.2.3 Required Python Packages ........................................................................................ 13
-*   **2.3 Performance Optimization** ........................................................................................ 13
-*   **2.4 Problem Statement** ........................................................................................ 13
+    *   2.1 Hardware Requirements ........................................................................................ 12
+    *   2.2 Software Requirements ........................................................................................ 12
+        *   2.2.1 Operating System ........................................................................................ 12
+        *   2.2.2 Runtime Environments ........................................................................................ 13
+        *   2.2.3 Required Python Packages ........................................................................................ 13
+    *   2.3 Performance Optimization ........................................................................................ 13
+    *   2.4 Problem Statement ........................................................................................ 13
 *   **3. Flow of the Work** ........................................................................................................ 14
 *   **4. Data Flow Diagram & Use Case Diagram** ........................................................................................ 17
-*   **4.1 Data Flow Diagram** ........................................................................................ 17
-*   **4.2 Use Case Diagram** ........................................................................................ 18
+    *   4.1 Data Flow Diagram ........................................................................................ 17
+    *   4.2 Use Case Diagram ........................................................................................ 18
 *   **5. Proposed System Algorithm** ........................................................................................ 19
-*   **5.1 Assumptions** ........................................................................................ 19
-*   **5.2 Algorithm Description** ........................................................................................ 19
-*   **5.3 Linking Theories and Algorithm** ........................................................................................ 22
+    *   5.1 Assumptions ........................................................................................ 19
+    *   5.2 Algorithm Description ........................................................................................ 19
+    *   5.3 Linking Theories and Algorithm ........................................................................................ 22
 *   **6. Simulation Results** ........................................................................................................ 23
-*   **6.1 Experimental Setup** ........................................................................................ 23
-*   **6.2 Experimental Results** ........................................................................................ 25
-*   **6.3 Comparative Analysis of Rule-Based vs. Hybrid ML/RL Models** ........................................................................................ 27
+    *   6.1 Experimental Setup ........................................................................................ 23
+    *   6.2 Experimental Results ........................................................................................ 25
+    *   6.3 Comparative Analysis of Pure ML and Hybrid AI Models ........................................................................................ 27
 *   **7. Conclusion & Future Work** ........................................................................................ 28
 *   **8. References** ........................................................................................................ 29
 
@@ -129,8 +129,10 @@ Finally, we express our heartfelt appreciation to our parents and friends for th
 *   **Figure 4.4**: System Use Case Diagram (Page 18)
 *   **Figure 5.1**: Pure Pursuit Steering Angle Geometry (Page 21)
 *   **Figure 5.2**: Quadratic Bezier Curve Construction at Intersections (Page 22)
+*   **Figure 6.0**: Procedural Road Network Topology Map (Page 24)
 *   **Figure 6.1**: Speed Profile and Autopilot Safety Index Chart (Page 26)
 *   **Figure 6.2**: G-G Ride Comfort Acceleration Scatter Plot (Page 26)
+*   **Figure 6.3**: Autopilot Efficiency & Safety vs. Traffic Density (Page 27)
 
 ### List of Tables
 *   **Table 2.1**: Minimum and Recommended Hardware Specifications (Page 12)
@@ -138,21 +140,21 @@ Finally, we express our heartfelt appreciation to our parents and friends for th
 *   **Table 6.1**: Physics & Simulation Parameters Setup (Page 23)
 *   **Table 6.2**: Routing Node Coordinates and Topology Data (Page 24)
 *   **Table 6.3**: Performance Metrics vs. AI Traffic Vehicle Density (Page 25)
-*   **Table 6.4**: Comparative Matrix: Traditional Rule-Based Control vs. Hybrid ML/RL System (Page 27)
+*   **Table 6.4**: Comparative Matrix: Pure ML (End-to-End Deep Learning) vs. Hybrid System (Page 27)
 
 ---
 
 ## ABSTRACT
 
-In this project, we design, implement, and analyze **SmartDrive**, an interactive 3D self-driving vehicle simulator using a hybrid client-server architecture. The primary objective is to leverage backend machine learning and reinforcement learning models for real-time decision making while maintaining physical simulation and rendering client-side.
+In this project, we design, implement, and analyze **SmartDrive**, an interactive 3D self-driving vehicle simulator using a hybrid client-server architecture. The primary objective is to separate high-level mathematical pathfinding computations from the real-time physical simulation and rendering loops. 
 
-The backend is built using Python and Flask inside [app.py](file:///c:/Users/Debarshi%20Chatterjee/Downloads/Final_proj_3D/app.py), hosting a Random Forest Regressor and a Random Forest Classifier for primary driving decision making (such as lane keeping and collision avoidance) alongside a Reinforcement Learning algorithm that optimizes driving policy based on simulation feedback. Telemetry and state-action data are continuously logged and saved in the `logs` folder for training the models. The client interface is implemented in Javascript using Three.js (WebGL) to simulate Newtonian vehicle physics, sensor array feedback, and traffic rules.
+The backend is built using Python and Flask, representing the road network as a topological graph and running an optimized A* pathfinding algorithm to determine the shortest route between parking slots and junctions. The client interface is implemented in Javascript using Three.js (WebGL) to simulate Newtonian vehicle physics, sensor array feedback, and traffic rules. 
 
-A custom Lidar (Light Detection and Ranging) sensor system is simulated using dynamic raycasting to detect obstacles, pedestrians, and road boundaries. Lateral steering control is achieved through a combination of the ML-driven decisions and a modified Pure Pursuit tracking algorithm, complemented by dynamic lookahead scaling and quadratic Bezier curve interpolation at intersections to resolve turning stability issues. Longitudinal velocity control is regulated by an Intelligent Driver Model (IDM) adaptation and refined by the reinforcement learning model.
+A custom Lidar (Light Detection and Ranging) sensor system is simulated using dynamic raycasting to detect obstacles, pedestrians, and road boundaries. Lateral steering control is achieved through a modified Pure Pursuit tracking algorithm, complemented by dynamic lookahead scaling and quadratic Bezier curve interpolation at intersections to resolve turning stability issues. Longitudinal velocity control is regulated by an Intelligent Driver Model (IDM) adaptation. 
 
-Furthermore, we implement a recovery state machine to resolve off-road deviations, yielding high robustness. The system operates in real-time within modern web browsers, demonstrating that separating machine learning inference (backend) from localized obstacle avoidance and kinematic modeling (frontend) maintains high framerates (60 FPS) and low latency while ensuring collision-free navigation.
+Furthermore, we implement a recovery state machine to resolve off-road deviations, yielding high robustness. The system operates in real-time within modern web browsers, demonstrating that separating graph routing (backend) from localized obstacle avoidance and kinematic modeling (frontend) maintains high framerates (60 FPS) and low latency while ensuring collision-free navigation.
 
-**Keywords**: 3D Simulator, Self-Driving Car, Random Forest, Reinforcement Learning, Three.js, Flask, Newtonian Physics, Training Logs.
+**Keywords**: 3D Simulator, Self-Driving Car, A* Pathfinding, Pure Pursuit, Three.js, Flask, Newtonian Physics, Lidar Raycasting.
 
 ---
 
@@ -167,9 +169,9 @@ However, modern simulators like CARLA, AirSim, or Gazebo require high-performanc
 |                        HYBRID ARCHITECTURE                      |
 |                                                                 |
 |  [ Three.js Frontend Client ]          [ Flask Python Backend ] |
-|  - Real-time 3D Rendering (60FPS)       - Random Forest Models  |
-|  - Kinematic Bicycle Physics            - Reinforcement Learning|
-|  - Lidar Raycast Obstacle Sensors       - Persistent Logs (/logs) |
+|  - Real-time 3D Rendering (60FPS)       - Road Graph Topology   |
+|  - Kinematic Bicycle Physics            - A* Pathfinding        |
+|  - Lidar Raycast Obstacle Sensors       - Telemetry Analytics   |
 |  - Pure Pursuit Lateral Control         - Matplotlib Plotting   |
 |          |                                      ^               |
 |          |-----( HTTP POST: /api/route )--------|               |
@@ -197,10 +199,8 @@ Additionally, this project is motivated by specific shortcomings in standard ste
 
 ### 1.3 Contribution
 The primary contributions of this project are:
-*   **A Hybrid Client-Server Architecture**: We decouple global path decisions and model execution (Python Flask server) from physical vehicle kinematics, sensor simulation, and immediate logic control loops (Javascript client).
-*   **Machine Learning-Based Decision Making**: We run Random Forest Classifier and Regressor models on the backend [app.py](file:///c:/Users/Debarshi%20Chatterjee/Downloads/Final_proj_3D/app.py) for routing classification and continuous trajectory adjustment.
-*   **Reinforcement Learning Integration**: We implement a Reinforcement Learning algorithm on the backend to optimize velocity and steering policies based on safety and passenger comfort rewards.
-*   **Persistent Training Data Logs**: We establish a telemetry logging pipeline that saves state-action sequences directly to the `logs` folder for offline model training and verification.
+*   **A Hybrid Client-Server Architecture**: We decouple global route generation (Python Flask server) from physical vehicle kinematics, sensor simulation, and immediate logic control loops (Javascript client).
+*   **Topological Network Router**: We implement a graph-based A* routing system on the backend that handles 3D physical coordinates and coordinates pathing between off-road parking bays.
 *   **Adaptive Geometric Control Subsystem**: We develop a speed-scaled Pure Pursuit lateral tracking system with intersection Bezier curve smoothing to reduce cornering overshoots by up to 55%.
 *   **Curb-Filtered Lidar System**: We resolve false sensor readings at road junctions by building curbs that automatically open at road intersections.
 *   **Multi-Vehicle Loop Orchestrator**: We establish four distinct, hemisphere-segmented NPC traffic loops with a donut-spin removal filter to model complex urban traffic patterns.
@@ -217,7 +217,7 @@ The client-server architecture allows the simulator to run on standard office la
 | **CPU** | Intel Core i3 (4th Gen) or AMD Ryzen 3 | Intel Core i5/i7 (8th Gen) or AMD Ryzen 5/7 |
 | **Memory (RAM)** | 4 GB DDR3 | 8 GB DDR4 or higher |
 | **Graphics (GPU)** | Intel HD Graphics 4000 (WebGL 1.0) | Dedicated NVIDIA GTX 1050 / AMD RX 560 (WebGL 2.0) |
-| **Storage** | 200 MB available space | 1 GB SSD (for fast telemetry and training log dumping) |
+| **Storage** | 200 MB available space | 1 GB SSD (for fast telemetry log dumping) |
 | **Network** | Loopback network interface | Localhost support |
 
 ### 2.2 Software Requirements
@@ -234,11 +234,9 @@ The software requires two runtime environments:
 2.  **Python Runtime**: Python 3.8 to Python 3.11 to run the Flask routing backend.
 
 #### 2.2.3 Required Python Packages
-The Flask backend requires several libraries for networking, machine learning, and graph plotting:
+The Flask backend requires several libraries for networking and graph plotting:
 *   `Flask` (v2.2.0+): Hosts the Web API endpoints.
 *   `Flask-CORS` (v3.0.0+): Enables Cross-Origin Resource Sharing for communication between the Vite frontend (port 3000) and the Flask API (port 5000).
-*   `scikit-learn` (v1.0.0+): Provides Random Forest Regressor and Random Forest Classifier implementation.
-*   `stable-baselines3` (v2.0.0+): Provides the Reinforcement Learning algorithms and policies.
 *   `matplotlib` (v3.5.0+): Generates the telemetry graphs in non-interactive mode.
 *   `numpy` (v1.21.0+): Used for mathematical array operations during analysis.
 
@@ -250,9 +248,9 @@ To maintain a high frame rate on the frontend, several optimization techniques a
 
 ### 2.4 Problem Statement
 Autonomous vehicle navigation requires solving three distinct problems:
-1.  **Global Routing & Maneuver Decisions**: Categorizing the sequence of movements and planning lanes dynamically using classifier and regressor ML algorithms.
+1.  **Global Routing**: Finding the shortest, most efficient sequence of roads connecting a starting point $A$ to a destination $B$ in a static graph network.
 2.  **Local Trajectory Planning**: Generating a smooth mathematical path that complies with road lanes, boundaries, and intersections.
-3.  **Reactive Control**: Adjusting throttle, steering, and braking using reinforcement learning and physical fallback loops in response to dynamic obstacles and system faults (such as sliding off the road).
+3.  **Reactive Control**: Adjusting throttle, steering, and braking in response to dynamic obstacles (like NPC traffic and crossing pedestrians) and system faults (such as sliding off the road).
 
 The **SmartDrive** project aims to design a system that coordinates these processes in real-time, executing path plans, maintaining lane alignment, avoiding collisions, complying with traffic rules, and performing recovery routines when manual overrides are disengaged.
 
@@ -270,24 +268,22 @@ sequenceDiagram
     
     Note over User, Server: 1. System Initialization
     Client->>Server: GET /api/network
-    Server-->>Client: Return Nodes & Edges JSON & Load ML Models
+    Server-->>Client: Return Nodes & Edges JSON
     Client->>Client: Construct 3D Road Network & Spawn NPC Cars
 
-    Note over User, Server: 2. Route & Decision Planning
+    Note over User, Server: 2. Route Planning
     User->>Client: Select Start & Destination Nodes
     Client->>Server: POST /api/route {start, end}
-    Server->>Server: Run Random Forest Classifier for Decision Routing
+    Server->>Server: Execute A* Pathfinding Algorithm
     Server-->>Client: Return Path Node Array & 3D Coordinates
     Client->>Client: Generate Smooth Waypoints (Bezier Curves & Offsets)
 
-    Note over User, Server: 3. Autopilot & Reinforcement Learning Loop
+    Note over User, Server: 3. Simulation & Autopilot Loop
     loop Every Frame (requestAnimationFrame)
         Client->>Client: Run Bicycle Kinematics & Update Vehicle Position
         Client->>Client: Cast Lidar Rays (Detect Obstacles & Pedestrians)
         Client->>Client: Apply Pure Pursuit (Lateral) & IDM (Longitudinal) Control
         Client->>Server: POST /api/telemetry {speed, safety_score, lidar_dist, ...}
-        Server->>Server: Run Reinforcement Learning Policy Update
-        Server->>Server: Save Trajectory Logs to /logs/
     end
 
     Note over User, Server: 4. Telemetry Report
@@ -300,7 +296,7 @@ sequenceDiagram
 The system execution lifecycle is structured into four distinct phases:
 
 ### Phase 1: Initialization
-1.  The Python Flask server starts on port `5000`, loads pre-trained Random Forest and Reinforcement Learning models in `app.py`, and initializes the road topology.
+1.  The Python Flask server starts on port `5000` and initializes the road topology.
 2.  The Vite frontend client starts on port `3000`. On load, the browser queries the backend API `/api/network` to retrieve node identifiers, coordinate matrices, and road parameters.
 3.  The frontend client parses this response and procedurally builds the 3D meshes: tarmac textures, white lane dividers, yellow shoulders, concrete curbs, crosswalks, and five dedicated parking bays.
 4.  Four NPC traffic vehicles are spawned in distinct loop sectors (hemispheres), and the user's vehicle is spawned in the designated starting parking bay.
@@ -308,7 +304,7 @@ The system execution lifecycle is structured into four distinct phases:
 ### Phase 2: Route Generation and Waypoint Building
 1.  The user selects a starting point and a destination from the control panel dropdowns.
 2.  A POST request is sent to the backend `/api/route` with the selected nodes.
-3.  The backend runs a Random Forest Classifier to determine the best pathing decisions (e.g., intersection routing transitions) and coordinates the node sequence.
+3.  The backend runs the A* pathfinding algorithm, returns the shortest node sequence, and sends the coordinates back to the client.
 4.  The client translates these nodes into a high-density waypoint list. During this step, the client shifts the path coordinates to the left side by `-3.2` meters to match the left-hand drive standard.
 5.  If a turn at a junction is detected (change in road heading angle), the client clips the straight lanes by 12 meters and constructs a smooth quadratic Bezier curve to interpolate the intersection path.
 
@@ -318,7 +314,7 @@ The simulation loop runs within a browser-driven request animation frame loop:
 2.  **Sensor Evaluation**: The Lidar sensor casts 5 rays in a $90^\circ$ radial fan, returning collision ranges and target object types.
 3.  **Local Decisions**: The vehicle checks traffic lights, pedestrian crosswalk status, and front obstacle ranges. It uses these variables to adjust the speed limit.
 4.  **Steering Execution**: The Pure Pursuit controller calculates the steering adjustment required to align with a lookahead target waypoint, which scales with velocity.
-5.  **Telemetry and Model Log**: Telemetry data (speed, acceleration, distance, collisions, and safety index) along with control outputs (throttle, steer angle) is sent to the Flask backend in real-time. The server saves this trajectory log directly into the `logs/` folder and passes it to the active Reinforcement Learning policy to continuously compute reward scores and optimize training.
+5.  **Telemetry Reporting**: Telemetry data (speed, acceleration, distance, collisions, and safety index) is sent to the Flask backend in real-time.
 
 ```mermaid
 flowchart TD
@@ -353,8 +349,8 @@ The Level 0 Context Diagram shows the boundaries of the system, identifying the 
 graph LR
     User[User / Tester] -- Selection Inputs / Keyboard Controls --> Sim[SmartDrive Simulation Engine]
     Sim -- Telemetry Teleplots / WebGL Views --> User
-    Sim -- HTTP Requests --> Flask[Flask ML/RL Server]
-    Flask -- ML Predictions & Paths --> Sim
+    Sim -- HTTP Requests --> Flask[Flask Routing Server]
+    Flask -- A* Node Path / Network Layout --> Sim
 ```
 
 #### Level 1 DFD (Subsystem Level)
@@ -366,13 +362,12 @@ graph TD
     UI -->|Route Request| Flask[Flask Routing Server]
     
     subgraph Backend Routing Server
-        Flask -->|Run Inference| MLModels[Random Forest Classifier & Regressor]
-        Flask -->|Log Packets| LogsDir[(logs/) Folder Training Logs]
-        Flask -->|Policy Training| RLModule[Reinforcement Learning Algorithm]
-        LogsDir -->|Plot Data| Matplot[Matplotlib Chart Generator]
+        Flask -->|Run Search| AStar[A* Pathfinding Module]
+        Flask -->|Log Packets| DB[Telemetry Buffer]
+        DB -->|Plot Data| Matplot[Matplotlib Chart Generator]
     end
     
-    MLModels -->|Path Coordinates JSON| UI
+    AStar -->|Path Coordinates JSON| UI
     UI -->|Inject Waypoints| Autopilot[Autopilot controller]
     
     subgraph Client Simulation Loop
@@ -447,59 +442,43 @@ graph LR
 
 ### 5.2 Algorithm Description
 
-#### Backend: Random Forest and Reinforcement Learning Decision Making
-Instead of using static geometric path search, the Flask backend in `app.py` operates a hybrid machine learning pipeline composed of a Random Forest Classifier, a Random Forest Regressor, and a Reinforcement Learning policy loop:
-
-##### I. Random Forest Decision Pipeline
-The Random Forest Classifier handles high-level lane-changing and routing decisions at intersections, classifying the current navigation goal into discrete maneuver commands. The Random Forest Regressor models the continuous physics corrections needed to maintain dynamic stability.
+#### Backend: A* Graph Routing Algorithm
+The road network is structured as a directed graph $G = (V, E)$, where $V$ is the set of nodes (intersections, turns, parking slots) and $E$ is the set of edges (connecting road segments). Each edge has a weight representing its physical Euclidean length. 
 
 ```python
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-
-# Random Forest Classifier to select discrete route behaviors
-classifier = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)
-# Random Forest Regressor to predict target steering offsets
-regressor = RandomForestRegressor(n_estimators=100, max_depth=12, random_state=42)
-
-def predict_maneuver(telemetry_features):
-    # Predict the target lane and intersection action
-    maneuver_class = classifier.predict([telemetry_features])[0]
-    # Predict the continuous steering correction
-    steering_offset = regressor.predict([telemetry_features])[0]
-    return maneuver_class, steering_offset
+def a_star(start_node, goal_node):
+    # g_score: actual cost from start to current node
+    g_score = {node: infinity for node in graph}
+    g_score[start_node] = 0
+    
+    # f_score: estimated total cost (g_score + heuristic)
+    f_score = {node: score for node in graph}
+    f_score[start_node] = heuristic(start_node, goal_node)
+    
+    open_set = PriorityQueue()
+    open_set.insert(start_node, priority=f_score[start_node])
+    parent = {}
+    
+    while not open_set.empty():
+        current = open_set.pop_minimum()
+        
+        if current == goal_node:
+            return reconstruct_path(parent, current)
+            
+        for neighbor, weight in graph.neighbors(current):
+            tentative_g = g_score[current] + weight
+            if tentative_g < g_score[neighbor]:
+                parent[neighbor] = current
+                g_score[neighbor] = tentative_g
+                f_score[neighbor] = tentative_g + heuristic(neighbor, goal_node)
+                if neighbor not in open_set:
+                    open_set.insert(neighbor, priority=f_score[neighbor])
+                    
+    return error_no_route
 ```
 
-##### II. Reinforcement Learning Control Policy
-A Reinforcement Learning model is trained online/offline using state observations from Lidar raycasts and vehicle positions. The RL policy outputs throttle and brake actions to optimize the reward function:
-
-$$\text{Reward} = w_1 \cdot v_{\text{forward}} - w_2 \cdot |a_{\text{lateral}}| - w_3 \cdot D_{\text{collision}} - w_4 \cdot \text{Deviation}_{\text{lane}}$$
-
-Where:
-*   $v_{\text{forward}}$ is the forward velocity.
-*   $a_{\text{lateral}}$ is lateral acceleration (ride comfort).
-*   $D_{\text{collision}}$ is a penalty for closeness to obstacles detected by Lidar.
-*   $\text{Deviation}_{\text{lane}}$ is the lateral distance from the center of the target lane.
-
-##### III. Persistent Logs and Training Buffer
-All training trajectories, including state arrays, control actions, and reward feedback, are dumped as timestamped JSON/CSV files inside the `logs/` directory. These logs act as an offline experience replay buffer for iterative model retraining.
-
-```python
-import os
-import json
-from datetime import datetime
-
-def log_training_step(state, action, reward, next_state):
-    log_entry = {
-        "timestamp": datetime.now().isoformat(),
-        "state": state.tolist(),
-        "action": action,
-        "reward": reward,
-        "next_state": next_state.tolist()
-    }
-    log_file_path = os.path.join("logs", "training_data.json")
-    with open(log_file_path, "a") as f:
-        f.write(json.dumps(log_entry) + "\n")
-```
+The heuristic function $h(n)$ uses the Euclidean distance:
+$$h(n) = \sqrt{(x_n - x_{\text{goal}})^2 + (z_n - z_{\text{goal}})^2}$$
 
 #### Frontend: Autopilot Control Loops
 
@@ -636,6 +615,12 @@ The road network topology consists of 14 nodes, listed below:
 | **13** | 0.0 | 170.0 | parking | South Parking Bay |
 | **14** | -170.0 | 0.0 | parking | West Parking Bay |
 
+<p align="center">
+  <img src="static/charts/road_network_topology.png" alt="Figure 6.0: Procedural Road Network Topology Map" width="70%"/>
+  <br>
+  <em><b>Figure 6.0</b>: Procedural Road Network Topology Map (containing junctions, bends, and parking spaces).</em>
+</p>
+
 ### 6.2 Experimental Results
 To validate the system, we ran simulation loops with varying traffic densities (number of NPC vehicles). The vehicle traveled from the **North Parking Bay (Node 11)** to the **South Junction (Node 3)**.
 
@@ -649,25 +634,22 @@ To validate the system, we ran simulation loops with varying traffic densities (
 | **Final Autopilot Safety Score** | 100% | 100% | 98.4% | 73.2% |
 | **Minimum Lidar Distance (m)** | 50.0 | 14.2 | 9.8 | 3.1 |
 
+<p align="center">
+  <img src="static/charts/figure_6_3.png" alt="Figure 6.3: Autopilot Efficiency & Safety vs. Traffic Density" width="85%"/>
+  <br>
+  <em><b>Figure 6.3</b>: Performance Comparison (Travel Time, Safety Score, and Average Speed) under varying traffic vehicle densities.</em>
+</p>
+
 #### Analysis of Results
 
 ##### 1. Speed Tracking and Safety Profile
 The relationship between speed tracking, sensor range, and safety score is shown in the chart below:
 
-```
-Telemetry Profile (Autopilot North-to-South Loop)
-Speed (km/h)
-  36 |       /------\                 /------\
-  24 |      /        \               /        \  (Cruising at 36 km/h / 10 m/s)
-  12 |     /          \______       /          \_____  (Intersection Deceleration)
-   0 +----+----------+-------+-----+----------+-------+
-     0    10         20      30    40         50      60 Time (s)
-     
-Safety Index (%)
- 100 +========================\=======================+
-  80 |                         \_____                  | (Proximity Alert Penalty)
-     +----+----------+-------+-----+----------+-------+
-```
+<p align="center">
+  <img src="static/charts/figure_6_1.png" alt="Figure 6.1: Speed Profile and Autopilot Safety Index Chart" width="90%"/>
+  <br>
+  <em><b>Figure 6.1</b>: Speed Profile and Autopilot Safety Index Chart over a 60-second test loop.</em>
+</p>
 
 *   **Acceleration Phase**: The vehicle accelerates out of the parking bay, maintaining its safety score at 100%.
 *   **Deceleration Phase**: The vehicle slows down at the first junction due to a yellow light, bringing its velocity to 0 m/s without triggering hard-braking G-force penalties.
@@ -677,42 +659,38 @@ Safety Index (%)
 ##### 2. Ride Comfort Profile
 The ride comfort profile shows the distribution of longitudinal acceleration during the drive:
 
-```
-               G-G G-Force Distribution (Scatter Plot)
-               
-                 Braking              Acceleration
-                 <- - - -            - - - ->
-             *  * * ***   |       * * * **
-   ----------+--+----+----+----+----+----+----+----------
-            -4  -3   -2   -1    0    1    2    3    4  (m/s^2)
-```
+<p align="center">
+  <img src="static/charts/figure_6_2.png" alt="Figure 6.2: G-G Ride Comfort Acceleration Scatter Plot" width="60%"/>
+  <br>
+  <em><b>Figure 6.2</b>: G-G acceleration scatter plot demonstrating lateral and longitudinal acceleration distribution.</em>
+</p>
 
 The scatter plot shows that deceleration forces are concentrated between $-1.0$ and $-3.0$ m/s², while hard braking events ($-20.0$ m/s²) only occur during emergency stops. This distribution indicates that the dynamic speed scaling and Bezier curve smoothing maintain lateral forces within passenger comfort limits.
 
-### 6.3 Comparative Analysis of Traditional Control and Our Hybrid ML/RL System
-Modern autonomous driving research often contrasts traditional geometric/heuristic control with hybrid ML/RL systems like ours:
+### 6.3 Comparative Analysis of Pure ML and Hybrid AI Models
+Modern autonomous driving research often contrasts end-to-end Machine Learning (ML) models with hybrid systems like ours:
 
-| Feature Dimension | Traditional Heuristic Control Systems | SmartDrive Hybrid ML/RL Architecture |
+| Feature Dimension | Pure ML Models (End-to-End Deep Learning) | SmartDrive Hybrid Architecture |
 | :--- | :--- | :--- |
-| **Adaptability** | Rigid rules; fails to adapt to dynamic traffic changes. | High; RL policy adapts steering and speed based on environment. |
-| **Inference Latency** | Very low, but lacks decision-making depth. | Extremely low; Random Forest inference runs within <1.5ms on backend. |
-| **Data Storage** | No persistence of path planning history. | Logs historical trajectories in `logs/` folder for offline model tuning. |
-| **Decision Space** | Discretized graph routing only. | Continuous decision space utilizing classifier and regressor prediction. |
-| **Safety Guarantees** | Hard limits; cannot handle complex unmapped curbs. | Combines state-machine recovery with RL avoidance policies. |
-| **Execution Rate** | 60 FPS on client. | 60 FPS client rendering with asynchronous backend ML inference. |
+| **Hardware Overhead** | High (requires local GPU/TPU accelerators). | Low (runs on standard browsers). |
+| **Explainability** | Low ("Black-Box" neural network decisions). | High (verifiable geometric equations). |
+| **Safety Guarantees** | Probabilistic (fails under novel conditions). | Deterministic (strict rules and limits). |
+| **Data Requirements** | Millions of training images and scenarios. | Zero training data; rule-based heuristics. |
+| **Corner Case Behavior** | Can behave unpredictably during exceptions. | State machines handle exceptions. |
+| **Execution Rate** | 10–30 FPS on specialized systems. | 60 FPS in WebGL browsers. |
 
 ---
 
 # 7. CONCLUSION & FUTURE WORK
 
-This project successfully demonstrates the design and execution of **SmartDrive**, a web-based 3D self-driving car simulator. By dividing the system into a client-server architecture, we decoupled high-level machine learning and reinforcement learning decision making (backend Flask API running Random Forest Classifier/Regressor and RL policies) from low-level physical dynamics and rendering (client-side Three.js engine). All training histories are persisted in the backend `logs/` directory.
+This project successfully demonstrates the design and execution of **SmartDrive**, a web-based 3D self-driving car simulator. By dividing the system into a client-server architecture, we decoupled high-level global path planning (backend Flask API running A*) from low-level physical dynamics and local control loops (client-side Three.js engine). 
 
-The simulator achieves smooth 60 FPS performance on standard laptops by leveraging WebGL and asynchronous inference on the backend. The path tracking is stabilized using the Random Forest predictions, a speed-scaled Pure Pursuit controller, and quadratic Bezier curves at turns. The system's robustness is further enhanced by an automated recovery state machine, Lidar sensors, and the RL policy loop.
+The simulator achieves smooth 60 FPS performance on standard laptops by leveraging WebGL and browser optimization techniques. The path tracking is stabilized using a speed-scaled Pure Pursuit controller and quadratic Bezier curves at turns. The system's robustness is further enhanced by an automated recovery state machine and Lidar sensors configured to ignore oncoming traffic and junction boundaries.
 
 ### Future Work
 While the simulator is robust, future development will focus on the following enhancements:
-1.  **Online Deep RL**: Moving from Random Forest models and basic RL policies to deep reinforcement learning (DQN/PPO) running directly in the browser via WebAssembly.
-2.  **Sensor Fusion**: Integrating visual camera feeds with simulated depth mapping to supplement the Lidar array.
+1.  **Sensor Fusion**: Integrating visual camera feeds with simulated depth mapping.
+2.  **Machine Learning Integration**: Running light deep Q-learning networks (DQN) within WebAssembly to optimize local steering decisions.
 3.  **Dynamic Environments**: Adding variable weather effects (rain, snow, fog) that alter the tire friction coefficients.
 4.  **Multi-Agent Coordination**: Using vehicle-to-vehicle (V2V) communication protocols to prevent gridlock at intersections.
 
